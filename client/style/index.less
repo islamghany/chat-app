@@ -1,0 +1,52 @@
+@import '~rsuite/lib/styles/themes/default/index.less'; //The default style file.
+
+@aux-color: #fff;
+@border-radius-base: 6px;
+@background-color:#f2f5ff;
+@base-color:#3f51b5;
+
+.box-shadow{
+	box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+}
+.center{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+
+body,html{
+	background: @background-color;
+}
+.form{
+    &__container{
+	  width:400px;
+	  padding:20px;
+	  border-radius: 6px;
+      background: @aux-color;
+      .box-shadow();
+	  }
+	  &__unit{
+	  	margin:10px 0;
+	  }
+	  &__error{
+	  	color:@error-color;
+	  	text-transform: capitalize;
+	  }
+	  &__end{
+	  	.center();
+	  }
+}
+.wrapper{	
+	&__center{
+		min-height:100vh;
+       .center();
+	}
+	&__info{
+		width: 400px;
+		margin-right: 30px;
+	}
+}
+.heading{
+	color:@base-color;
+}
