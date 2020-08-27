@@ -1,3 +1,9 @@
+enum State {
+  SENT	
+  SEEN	
+  DELETED
+}
+
 type User {
       id: ID! @id
       email: String! @unique
@@ -5,5 +11,27 @@ type User {
       username:String! @unique
       name: String!
       resetPasswordLink:String
-      friends:[User]
-}      
+      chats:[Chat]
+      isOnline:Boolean
+}     
+
+type Chat {
+	id: ID! @id
+	name:String
+	createdAt:DateTime! @createdAt
+	updatedAt:DateTime! @updatedAt
+	unreadMessages:Int
+	users:[User!]!
+	messages:[Message]!
+}
+
+type Message{
+	id: ID! @id
+	text: String!
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime!  @updatedAt
+	user: User!
+	chat: Chat!
+	state:State
+	lastMessage:String
+}

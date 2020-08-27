@@ -8,7 +8,8 @@ type UserSafe {
    id:ID!
    email:String! 
    name:String!
-   username:String!   
+   username:String!
+   chats:[Chat]!   
 } 
 type UserPayload {
 	user:UserSafe!
@@ -17,14 +18,24 @@ type UserPayload {
 
 type Query{
 	users:[User]!
-	userExist(email:String!):String!
 	me:UserSafe!
 	activateAccount(token:String!):SuccessMessage
 	isTokenTrue(token:String):SuccessMessage
+	chats:[Chat]!
+	messages(chatId:ID!):[Message]!
 }
 type Mutation{
 	signup(name:String!,username:String!,email:String!,password:String!):SuccessMessage!
 	login(email:String!,password:String!,remember:Boolean):UserPayload!
 	forgetPassword(email:String!):SuccessMessage
     resetPassword(newPassword:String!,resetPasswordLink:String!):SuccessMessage
+    createChat(
+    	name:String!,
+    	users:[ID!]!
+    	):Chat!
+    createMessage(chatId:ID!,text:String!):Message!
+}
+type Subscription{
+	chatting(id:ID!):ChatSubscriptionPayload!
+	chat(where:ChatSubscriptionWhereInput):ChatSubscriptionPayload!
 }

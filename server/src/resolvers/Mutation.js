@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sgMail = require("@sendgrid/mail");
 const validator = require("validator");
+const {AuthenticationError} = require('apollo-server-express')
 
 require("dotenv").config();
 
@@ -211,4 +212,93 @@ module.exports = {
     }
     return { message: user.name };
   },
+
+
+
+
+/******************chatting******************/
+
+async createChat(_,{name,users},ctx,info){
+  // 1-check if the user is authrized
+  if(!ctx.user || !ctx.user.userId){
+    throw new AuthenticationError('Unauthorized, You must be logged in to query this schema');
+  }
+  users.push(ctx.user.userId);
+
+  const data = {
+    name,
+    users:{
+      connect:users.map(id=>({
+        id
+      }))
+    }
+  };
+  let chat;
+  try{
+    chat = await ctx.db.mutation.createChat({data},info)
+  }catch(err){
+    throw new Error('Something went wrong. Try later');
+  }
+   try{
+      await Promise.all(
+    users.map(async userID => {
+      return await ctx.db.mutation.updateUser({
+        where: {
+          id: userID
+        },
+        data: {
+          chats: {
+            connect: {
+              id: chat.id
+            }
+          }
+        }
+      }, info)
+    })
+  )
+   }catch(err){
+      throw new Error('Something went wrong. Try later');
+   }
+   return chat;
+ },
+  async createMessage(_,{chatId,text},ctx,info){
+   // 1-check if the user is authrized
+  if(!ctx.user || !ctx.user.userId){
+    throw new AuthenticationError('Unauthorized, You must be logged in to query this schema');
+  }
+    let messgae;
+    const data = {
+      text,
+      state:'SENT',
+      user:{
+        connect:{
+          id:ctx.user.userId
+        },
+      },
+      chat:{
+        connect:{
+          id:chatId
+        }
+      }
+    };
+    try{
+      message = await ctx.db.mutation.createMessage({data},info);
+      await ctx.db.mutation.updateChat({
+        data:{
+          messages:{
+            connect:{
+              id:message.id
+            }
+          }
+        },
+        where:{
+          id:chatId
+        }
+      })
+    }catch(err){
+      console.log(err)
+      throw new Error('Something went wrong. Try later');      
+    }
+    return message;
+  }
 };

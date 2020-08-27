@@ -18,7 +18,7 @@ module.exports = {
         where:{
           id:user.userId
         }
-      })
+      },info)
     }catch(err){
       console.log('unknowen error')
     }

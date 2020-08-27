@@ -1,3 +1,11 @@
+type AggregateChat {
+  count: Int!
+}
+
+type AggregateMessage {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -6,9 +14,593 @@ type BatchPayload {
   count: Long!
 }
 
+type Chat {
+  id: ID!
+  name: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  unreadMessages: Int
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message!]
+}
+
+type ChatConnection {
+  pageInfo: PageInfo!
+  edges: [ChatEdge]!
+  aggregate: AggregateChat!
+}
+
+input ChatCreateInput {
+  id: ID
+  name: String
+  unreadMessages: Int
+  users: UserCreateManyWithoutChatsInput
+  messages: MessageCreateManyWithoutChatInput
+}
+
+input ChatCreateManyWithoutUsersInput {
+  create: [ChatCreateWithoutUsersInput!]
+  connect: [ChatWhereUniqueInput!]
+}
+
+input ChatCreateOneWithoutMessagesInput {
+  create: ChatCreateWithoutMessagesInput
+  connect: ChatWhereUniqueInput
+}
+
+input ChatCreateWithoutMessagesInput {
+  id: ID
+  name: String
+  unreadMessages: Int
+  users: UserCreateManyWithoutChatsInput
+}
+
+input ChatCreateWithoutUsersInput {
+  id: ID
+  name: String
+  unreadMessages: Int
+  messages: MessageCreateManyWithoutChatInput
+}
+
+type ChatEdge {
+  node: Chat!
+  cursor: String!
+}
+
+enum ChatOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  unreadMessages_ASC
+  unreadMessages_DESC
+}
+
+type ChatPreviousValues {
+  id: ID!
+  name: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  unreadMessages: Int
+}
+
+input ChatScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  unreadMessages: Int
+  unreadMessages_not: Int
+  unreadMessages_in: [Int!]
+  unreadMessages_not_in: [Int!]
+  unreadMessages_lt: Int
+  unreadMessages_lte: Int
+  unreadMessages_gt: Int
+  unreadMessages_gte: Int
+  AND: [ChatScalarWhereInput!]
+  OR: [ChatScalarWhereInput!]
+  NOT: [ChatScalarWhereInput!]
+}
+
+type ChatSubscriptionPayload {
+  mutation: MutationType!
+  node: Chat
+  updatedFields: [String!]
+  previousValues: ChatPreviousValues
+}
+
+input ChatSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ChatWhereInput
+  AND: [ChatSubscriptionWhereInput!]
+  OR: [ChatSubscriptionWhereInput!]
+  NOT: [ChatSubscriptionWhereInput!]
+}
+
+input ChatUpdateInput {
+  name: String
+  unreadMessages: Int
+  users: UserUpdateManyWithoutChatsInput
+  messages: MessageUpdateManyWithoutChatInput
+}
+
+input ChatUpdateManyDataInput {
+  name: String
+  unreadMessages: Int
+}
+
+input ChatUpdateManyMutationInput {
+  name: String
+  unreadMessages: Int
+}
+
+input ChatUpdateManyWithoutUsersInput {
+  create: [ChatCreateWithoutUsersInput!]
+  delete: [ChatWhereUniqueInput!]
+  connect: [ChatWhereUniqueInput!]
+  set: [ChatWhereUniqueInput!]
+  disconnect: [ChatWhereUniqueInput!]
+  update: [ChatUpdateWithWhereUniqueWithoutUsersInput!]
+  upsert: [ChatUpsertWithWhereUniqueWithoutUsersInput!]
+  deleteMany: [ChatScalarWhereInput!]
+  updateMany: [ChatUpdateManyWithWhereNestedInput!]
+}
+
+input ChatUpdateManyWithWhereNestedInput {
+  where: ChatScalarWhereInput!
+  data: ChatUpdateManyDataInput!
+}
+
+input ChatUpdateOneRequiredWithoutMessagesInput {
+  create: ChatCreateWithoutMessagesInput
+  update: ChatUpdateWithoutMessagesDataInput
+  upsert: ChatUpsertWithoutMessagesInput
+  connect: ChatWhereUniqueInput
+}
+
+input ChatUpdateWithoutMessagesDataInput {
+  name: String
+  unreadMessages: Int
+  users: UserUpdateManyWithoutChatsInput
+}
+
+input ChatUpdateWithoutUsersDataInput {
+  name: String
+  unreadMessages: Int
+  messages: MessageUpdateManyWithoutChatInput
+}
+
+input ChatUpdateWithWhereUniqueWithoutUsersInput {
+  where: ChatWhereUniqueInput!
+  data: ChatUpdateWithoutUsersDataInput!
+}
+
+input ChatUpsertWithoutMessagesInput {
+  update: ChatUpdateWithoutMessagesDataInput!
+  create: ChatCreateWithoutMessagesInput!
+}
+
+input ChatUpsertWithWhereUniqueWithoutUsersInput {
+  where: ChatWhereUniqueInput!
+  update: ChatUpdateWithoutUsersDataInput!
+  create: ChatCreateWithoutUsersInput!
+}
+
+input ChatWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  unreadMessages: Int
+  unreadMessages_not: Int
+  unreadMessages_in: [Int!]
+  unreadMessages_not_in: [Int!]
+  unreadMessages_lt: Int
+  unreadMessages_lte: Int
+  unreadMessages_gt: Int
+  unreadMessages_gte: Int
+  users_every: UserWhereInput
+  users_some: UserWhereInput
+  users_none: UserWhereInput
+  messages_every: MessageWhereInput
+  messages_some: MessageWhereInput
+  messages_none: MessageWhereInput
+  AND: [ChatWhereInput!]
+  OR: [ChatWhereInput!]
+  NOT: [ChatWhereInput!]
+}
+
+input ChatWhereUniqueInput {
+  id: ID
+}
+
+scalar DateTime
+
 scalar Long
 
+type Message {
+  id: ID!
+  text: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+  chat: Chat!
+  state: State
+  lastMessage: String
+}
+
+type MessageConnection {
+  pageInfo: PageInfo!
+  edges: [MessageEdge]!
+  aggregate: AggregateMessage!
+}
+
+input MessageCreateInput {
+  id: ID
+  text: String!
+  user: UserCreateOneInput!
+  chat: ChatCreateOneWithoutMessagesInput!
+  state: State
+  lastMessage: String
+}
+
+input MessageCreateManyWithoutChatInput {
+  create: [MessageCreateWithoutChatInput!]
+  connect: [MessageWhereUniqueInput!]
+}
+
+input MessageCreateWithoutChatInput {
+  id: ID
+  text: String!
+  user: UserCreateOneInput!
+  state: State
+  lastMessage: String
+}
+
+type MessageEdge {
+  node: Message!
+  cursor: String!
+}
+
+enum MessageOrderByInput {
+  id_ASC
+  id_DESC
+  text_ASC
+  text_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  state_ASC
+  state_DESC
+  lastMessage_ASC
+  lastMessage_DESC
+}
+
+type MessagePreviousValues {
+  id: ID!
+  text: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  state: State
+  lastMessage: String
+}
+
+input MessageScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  state: State
+  state_not: State
+  state_in: [State!]
+  state_not_in: [State!]
+  lastMessage: String
+  lastMessage_not: String
+  lastMessage_in: [String!]
+  lastMessage_not_in: [String!]
+  lastMessage_lt: String
+  lastMessage_lte: String
+  lastMessage_gt: String
+  lastMessage_gte: String
+  lastMessage_contains: String
+  lastMessage_not_contains: String
+  lastMessage_starts_with: String
+  lastMessage_not_starts_with: String
+  lastMessage_ends_with: String
+  lastMessage_not_ends_with: String
+  AND: [MessageScalarWhereInput!]
+  OR: [MessageScalarWhereInput!]
+  NOT: [MessageScalarWhereInput!]
+}
+
+type MessageSubscriptionPayload {
+  mutation: MutationType!
+  node: Message
+  updatedFields: [String!]
+  previousValues: MessagePreviousValues
+}
+
+input MessageSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: MessageWhereInput
+  AND: [MessageSubscriptionWhereInput!]
+  OR: [MessageSubscriptionWhereInput!]
+  NOT: [MessageSubscriptionWhereInput!]
+}
+
+input MessageUpdateInput {
+  text: String
+  user: UserUpdateOneRequiredInput
+  chat: ChatUpdateOneRequiredWithoutMessagesInput
+  state: State
+  lastMessage: String
+}
+
+input MessageUpdateManyDataInput {
+  text: String
+  state: State
+  lastMessage: String
+}
+
+input MessageUpdateManyMutationInput {
+  text: String
+  state: State
+  lastMessage: String
+}
+
+input MessageUpdateManyWithoutChatInput {
+  create: [MessageCreateWithoutChatInput!]
+  delete: [MessageWhereUniqueInput!]
+  connect: [MessageWhereUniqueInput!]
+  set: [MessageWhereUniqueInput!]
+  disconnect: [MessageWhereUniqueInput!]
+  update: [MessageUpdateWithWhereUniqueWithoutChatInput!]
+  upsert: [MessageUpsertWithWhereUniqueWithoutChatInput!]
+  deleteMany: [MessageScalarWhereInput!]
+  updateMany: [MessageUpdateManyWithWhereNestedInput!]
+}
+
+input MessageUpdateManyWithWhereNestedInput {
+  where: MessageScalarWhereInput!
+  data: MessageUpdateManyDataInput!
+}
+
+input MessageUpdateWithoutChatDataInput {
+  text: String
+  user: UserUpdateOneRequiredInput
+  state: State
+  lastMessage: String
+}
+
+input MessageUpdateWithWhereUniqueWithoutChatInput {
+  where: MessageWhereUniqueInput!
+  data: MessageUpdateWithoutChatDataInput!
+}
+
+input MessageUpsertWithWhereUniqueWithoutChatInput {
+  where: MessageWhereUniqueInput!
+  update: MessageUpdateWithoutChatDataInput!
+  create: MessageCreateWithoutChatInput!
+}
+
+input MessageWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  user: UserWhereInput
+  chat: ChatWhereInput
+  state: State
+  state_not: State
+  state_in: [State!]
+  state_not_in: [State!]
+  lastMessage: String
+  lastMessage_not: String
+  lastMessage_in: [String!]
+  lastMessage_not_in: [String!]
+  lastMessage_lt: String
+  lastMessage_lte: String
+  lastMessage_gt: String
+  lastMessage_gte: String
+  lastMessage_contains: String
+  lastMessage_not_contains: String
+  lastMessage_starts_with: String
+  lastMessage_not_starts_with: String
+  lastMessage_ends_with: String
+  lastMessage_not_ends_with: String
+  AND: [MessageWhereInput!]
+  OR: [MessageWhereInput!]
+  NOT: [MessageWhereInput!]
+}
+
+input MessageWhereUniqueInput {
+  id: ID
+}
+
 type Mutation {
+  createChat(data: ChatCreateInput!): Chat!
+  updateChat(data: ChatUpdateInput!, where: ChatWhereUniqueInput!): Chat
+  updateManyChats(data: ChatUpdateManyMutationInput!, where: ChatWhereInput): BatchPayload!
+  upsertChat(where: ChatWhereUniqueInput!, create: ChatCreateInput!, update: ChatUpdateInput!): Chat!
+  deleteChat(where: ChatWhereUniqueInput!): Chat
+  deleteManyChats(where: ChatWhereInput): BatchPayload!
+  createMessage(data: MessageCreateInput!): Message!
+  updateMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
+  updateManyMessages(data: MessageUpdateManyMutationInput!, where: MessageWhereInput): BatchPayload!
+  upsertMessage(where: MessageWhereUniqueInput!, create: MessageCreateInput!, update: MessageUpdateInput!): Message!
+  deleteMessage(where: MessageWhereUniqueInput!): Message
+  deleteManyMessages(where: MessageWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -35,13 +627,27 @@ type PageInfo {
 }
 
 type Query {
+  chat(where: ChatWhereUniqueInput!): Chat
+  chats(where: ChatWhereInput, orderBy: ChatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Chat]!
+  chatsConnection(where: ChatWhereInput, orderBy: ChatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChatConnection!
+  message(where: MessageWhereUniqueInput!): Message
+  messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message]!
+  messagesConnection(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MessageConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
+enum State {
+  SENT
+  SEEN
+  DELETED
+}
+
 type Subscription {
+  chat(where: ChatSubscriptionWhereInput): ChatSubscriptionPayload
+  message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -52,7 +658,8 @@ type User {
   username: String!
   name: String!
   resetPasswordLink: String
-  friends(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  chats(where: ChatWhereInput, orderBy: ChatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Chat!]
+  isOnline: Boolean
 }
 
 type UserConnection {
@@ -68,12 +675,28 @@ input UserCreateInput {
   username: String!
   name: String!
   resetPasswordLink: String
-  friends: UserCreateManyInput
+  chats: ChatCreateManyWithoutUsersInput
+  isOnline: Boolean
 }
 
-input UserCreateManyInput {
-  create: [UserCreateInput!]
+input UserCreateManyWithoutChatsInput {
+  create: [UserCreateWithoutChatsInput!]
   connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutChatsInput {
+  id: ID
+  email: String!
+  password: String!
+  username: String!
+  name: String!
+  resetPasswordLink: String
+  isOnline: Boolean
 }
 
 type UserEdge {
@@ -94,6 +717,8 @@ enum UserOrderByInput {
   name_DESC
   resetPasswordLink_ASC
   resetPasswordLink_DESC
+  isOnline_ASC
+  isOnline_DESC
 }
 
 type UserPreviousValues {
@@ -103,6 +728,7 @@ type UserPreviousValues {
   username: String!
   name: String!
   resetPasswordLink: String
+  isOnline: Boolean
 }
 
 input UserScalarWhereInput {
@@ -190,6 +816,8 @@ input UserScalarWhereInput {
   resetPasswordLink_not_starts_with: String
   resetPasswordLink_ends_with: String
   resetPasswordLink_not_ends_with: String
+  isOnline: Boolean
+  isOnline_not: Boolean
   AND: [UserScalarWhereInput!]
   OR: [UserScalarWhereInput!]
   NOT: [UserScalarWhereInput!]
@@ -219,7 +847,8 @@ input UserUpdateDataInput {
   username: String
   name: String
   resetPasswordLink: String
-  friends: UserUpdateManyInput
+  chats: ChatUpdateManyWithoutUsersInput
+  isOnline: Boolean
 }
 
 input UserUpdateInput {
@@ -228,7 +857,8 @@ input UserUpdateInput {
   username: String
   name: String
   resetPasswordLink: String
-  friends: UserUpdateManyInput
+  chats: ChatUpdateManyWithoutUsersInput
+  isOnline: Boolean
 }
 
 input UserUpdateManyDataInput {
@@ -237,18 +867,7 @@ input UserUpdateManyDataInput {
   username: String
   name: String
   resetPasswordLink: String
-}
-
-input UserUpdateManyInput {
-  create: [UserCreateInput!]
-  update: [UserUpdateWithWhereUniqueNestedInput!]
-  upsert: [UserUpsertWithWhereUniqueNestedInput!]
-  delete: [UserWhereUniqueInput!]
-  connect: [UserWhereUniqueInput!]
-  set: [UserWhereUniqueInput!]
-  disconnect: [UserWhereUniqueInput!]
-  deleteMany: [UserScalarWhereInput!]
-  updateMany: [UserUpdateManyWithWhereNestedInput!]
+  isOnline: Boolean
 }
 
 input UserUpdateManyMutationInput {
@@ -257,6 +876,19 @@ input UserUpdateManyMutationInput {
   username: String
   name: String
   resetPasswordLink: String
+  isOnline: Boolean
+}
+
+input UserUpdateManyWithoutChatsInput {
+  create: [UserCreateWithoutChatsInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutChatsInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutChatsInput!]
+  deleteMany: [UserScalarWhereInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
 }
 
 input UserUpdateManyWithWhereNestedInput {
@@ -264,15 +896,36 @@ input UserUpdateManyWithWhereNestedInput {
   data: UserUpdateManyDataInput!
 }
 
-input UserUpdateWithWhereUniqueNestedInput {
-  where: UserWhereUniqueInput!
-  data: UserUpdateDataInput!
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  connect: UserWhereUniqueInput
 }
 
-input UserUpsertWithWhereUniqueNestedInput {
+input UserUpdateWithoutChatsDataInput {
+  email: String
+  password: String
+  username: String
+  name: String
+  resetPasswordLink: String
+  isOnline: Boolean
+}
+
+input UserUpdateWithWhereUniqueWithoutChatsInput {
   where: UserWhereUniqueInput!
+  data: UserUpdateWithoutChatsDataInput!
+}
+
+input UserUpsertNestedInput {
   update: UserUpdateDataInput!
   create: UserCreateInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutChatsInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutChatsDataInput!
+  create: UserCreateWithoutChatsInput!
 }
 
 input UserWhereInput {
@@ -360,9 +1013,11 @@ input UserWhereInput {
   resetPasswordLink_not_starts_with: String
   resetPasswordLink_ends_with: String
   resetPasswordLink_not_ends_with: String
-  friends_every: UserWhereInput
-  friends_some: UserWhereInput
-  friends_none: UserWhereInput
+  chats_every: ChatWhereInput
+  chats_some: ChatWhereInput
+  chats_none: ChatWhereInput
+  isOnline: Boolean
+  isOnline_not: Boolean
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -371,4 +1026,5 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   id: ID
   email: String
+  username: String
 }
