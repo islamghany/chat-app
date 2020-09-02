@@ -33,6 +33,7 @@ export const isDrawerOpen = makeVar<boolean>(false);
 export const isModalOpen = makeVar<boolean>(false);
 export const searchKeyword = makeVar<string>('');
 
+
 const httpLink = createHttpLink({
   uri:process.env.NODE_ENV === 'production' ? prodEndpoint :endpoint,
 });
@@ -54,6 +55,7 @@ const wsLink = new WebSocketLink({
   uri: process.env.NODE_ENV === 'production' ? prodSubEndpoint : subEndpoint,
   options: {
     reconnect: true,
+    timeout: 30000,
     connectionParams: {
       Authorization:`Bearer ${token()}`,
     },
@@ -74,7 +76,7 @@ const wsLink = new WebSocketLink({
 
 
 export const client = new ApolloClient({
-  ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
+    ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     link,
     cache: new InMemoryCache({
        typePolicies:{
