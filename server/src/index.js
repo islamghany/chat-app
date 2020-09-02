@@ -16,7 +16,7 @@ const db = require('./db');
 
 dotenv.config();
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 // start
 const app = express();
 const server = createServer(app);
