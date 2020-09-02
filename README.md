@@ -1,16 +1,16 @@
 # chat-app
 real-time chat app with graphql 
 
-##beta version
+## beta version
 <div style="display:flex;justify-content:center;">
-<img src="./client/public/a" />
+<img src="./client/public/a.PNG" />
 </div>
 
-#features
+# features
 <ul>
  <li>high authentication</li>
  <li>real-time adding and deleting messages and create group</li>
 </ul>
 <div style="display:flex;justify-content:center;">
-<img src="./client/public/c" />
+<img src="./client/public/c.png" />
 </div>
