@@ -17,12 +17,13 @@ type UserPayload {
 }
 
 type Query{
-	users:[User]!
+	users(keyword: String!):[User]!
 	me:UserSafe!
 	activateAccount(token:String!):SuccessMessage
 	isTokenTrue(token:String):SuccessMessage
-	chats:[Chat]!
-	messages(chatId:ID!):[Message]!
+	chats(where: ChatWhereInput, orderBy: ChatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int):[Chat]!
+	messages(id:ID!,orderBy:MessageOrderByInput,skip:Int,after:String,before:String,first: Int, last: Int):[Message]!
+    messagesConnection(id:ID!):MessageConnection!
 }
 type Mutation{
 	signup(name:String!,username:String!,email:String!,password:String!):SuccessMessage!
@@ -34,8 +35,10 @@ type Mutation{
     	users:[ID!]!
     	):Chat!
     createMessage(chatId:ID!,text:String!):Message!
+    deleteMessage(id:ID):Message!
 }
 type Subscription{
-	chatting(id:ID!):ChatSubscriptionPayload!
+	chatting:ChatSubscriptionPayload!
 	chat(where:ChatSubscriptionWhereInput):ChatSubscriptionPayload!
+	message(id:ID):MessageSubscriptionPayload!
 }

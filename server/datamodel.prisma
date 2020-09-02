@@ -21,6 +21,8 @@ type Chat {
 	createdAt:DateTime! @createdAt
 	updatedAt:DateTime! @updatedAt
 	unreadMessages:Int
+	text:String
+	lastMessage:String
 	users:[User!]!
 	messages:[Message]!
 }
@@ -33,5 +35,4 @@ type Message{
 	user: User!
 	chat: Chat!
 	state:State
-	lastMessage:String
 }

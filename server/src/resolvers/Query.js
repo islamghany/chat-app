@@ -4,10 +4,32 @@ const jwt = require("jsonwebtoken");
 const {AuthenticationError} = require('apollo-server-express')
 
 module.exports = {
-	users:(_,args,ctx)=>{
-		return ctx.db.query.users({});
+	async users(_,{keyword},ctx,info){
+    const {user} = ctx;
+    if(!user || !user.userId){
+      throw new AuthenticationError('Unauthorized, You must be logged in to query this schema');
+    }
+    let users;
+    try{
+      users = await ctx.db.query.users({
+        where:{
+   AND:[
+      {
+        id_not:user.userId
+      },
+      {
+        username_contains:keyword
+      }
+    ],
+  },
+        first:10,
+      });
+    }catch(err){
+    }
+		return users;
 	},
   async me(_,args,ctx,info){
+
     const {user} = ctx;
     if(!user || !user.userId){
       throw new AuthenticationError('Unauthorized, You must be logged in to query this schema');
@@ -20,7 +42,6 @@ module.exports = {
         }
       },info)
     }catch(err){
-      console.log('unknowen error')
     }
     return existedUser;
   },
@@ -60,7 +81,6 @@ module.exports = {
       return { message: decodedToken.name }; 
   },
   async isTokenTrue(_, { token }, ctx, info) {
-    //console.log()
     let user,decoded;
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -73,5 +93,62 @@ module.exports = {
     }
     return { message: decoded.name || 'islam' };
   },
-
+  async chats(_,{orderBy, skip, after, before, first, last},ctx,info){
+    const {user} = ctx;
+    if(!user || !user.userId){
+      throw new AuthenticationError('Unauthorized, You must be logged in to query this schema');
+    }
+    let chats;
+    const where={
+       users_some:{
+         id:user.userId
+       }
+    }
+    try{
+      chats = await ctx.db.query.chats({
+        where,
+        orderBy:'updatedAt_DESC',
+        skip,
+      },info)
+    }catch(err){}
+    return chats;
+  },
+  async messages(_,{id,orderBy,skip,after,before,first, last},ctx,info){
+     const {user} = ctx;
+    if(!user || !user.userId){
+      throw new AuthenticationError('Unauthorized, You must be logged in to query this schema');
+    }
+    let messages;
+    try{
+     messages= await ctx.db.query.messages({
+        where:{
+          chat:{
+            id
+          }
+        },
+        orderBy,
+        skip,
+        first,
+        last 
+      },info)
+    }catch(err){}
+    return messages
+  },
+  async messagesConnection(_,{id},ctx,info){
+    const {user} = ctx;
+    if(!user || !user.userId){
+      throw new AuthenticationError('Unauthorized, You must be logged in to query this schema');
+    }
+    let x;
+    try{
+      x = await ctx.db.query.messagesConnection({
+        where:{
+          chat:{
+            id
+          }
+        }
+      },info)
+    }catch(err){}
+    return x;
+  }
 }

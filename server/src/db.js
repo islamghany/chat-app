@@ -1,8 +1,11 @@
 const { Prisma } = require('prisma-binding');
 
 const db = new Prisma({
-      typeDefs: "./src/generated/prisma.graphql",
-      endpoint: "https://eu1.prisma.sh/islam-mostafa-ef8610/note-app/dev",
- })
+        typeDefs: "./src/generated/prisma.graphql",
+        endpoint: `${process.env.PRISMA_ENDPOINT}`,
+        secret: process.env.PRISMA_SECRET,
+        debug: false,
+ });
 
-db.query.users({}).then(res=>console.log(res)).catch(err=>console.log(err))
+module.exports = db;
+

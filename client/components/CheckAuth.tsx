@@ -1,23 +1,21 @@
-import { CURRENT_USER } from "./User";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import LoadingPage from "./loading";
 
-const CheckAuth = ({ data, children }) => {
+const CheckAuth = ({ data, children }:any) => {
   const router = useRouter();
   const isData = data?.me?.name;
-  console.log(isData);
   if (isData && router.pathname !== "/") {
-    Router.push(`/`);
+    router.push(`/`);
   }
-  if (!isData && router.pathname === "/") {
-    Router.push(`/login`);
+  else if (!isData && router.pathname === "/") {
+    router.push(`/login`);
   }
 
   if (
     (isData && router.pathname !== "/") ||
     (!isData && router.pathname === "/")
   )
-    return <LoadingPage loaing={true} />;
+   return <LoadingPage loading={true} />;
   return <div>{children}</div>;
 };
 export default CheckAuth;

@@ -73,16 +73,14 @@ module.exports = {
       };
       const sent = await sgMail.send(emailDate);
     } catch (err) {
-      console.log(err);
       throw new Error(`Signing up failed, please try again later.`);
     }
 
     // 5- return a message with the email with success
     return { message: email };
   },
-  async login(_, { email, password , remember }, { db }, info) {
+  async login(_, { email, password  }, { db }, info) {
     // 1- check if whether is email or username
-    console.log({ email, password , remember })
     let isEmail;
     if (validator.isEmail(email)) {
       isEmail = true;
@@ -166,7 +164,6 @@ module.exports = {
         info
       );
     } catch (err) {
-      console.log(err);
       throw new Error("Unknowen error please try again later.");
     }
     return { message: email };
@@ -218,13 +215,15 @@ module.exports = {
 
 /******************chatting******************/
 
+
 async createChat(_,{name,users},ctx,info){
+
   // 1-check if the user is authrized
   if(!ctx.user || !ctx.user.userId){
     throw new AuthenticationError('Unauthorized, You must be logged in to query this schema');
   }
   users.push(ctx.user.userId);
-
+  
   const data = {
     name,
     users:{
@@ -239,26 +238,26 @@ async createChat(_,{name,users},ctx,info){
   }catch(err){
     throw new Error('Something went wrong. Try later');
   }
-   try{
-      await Promise.all(
-    users.map(async userID => {
-      return await ctx.db.mutation.updateUser({
-        where: {
-          id: userID
-        },
-        data: {
-          chats: {
-            connect: {
-              id: chat.id
-            }
-          }
-        }
-      }, info)
-    })
-  )
-   }catch(err){
-      throw new Error('Something went wrong. Try later');
-   }
+  //  try{
+  //     await Promise.all(
+  //   users.map(async userID => {
+  //     return await ctx.db.mutation.updateUser({
+  //       where: {
+  //         id: userID
+  //       },
+  //       data: {
+  //         chats: {
+  //           connect: {
+  //             id: chat.id
+  //           }
+  //         }
+  //       }
+  //     }, info)
+  //   })
+  // )
+  //  }catch(err){
+  //     throw new Error('Something went wrong. Try later');
+  //  }
    return chat;
  },
   async createMessage(_,{chatId,text},ctx,info){
@@ -285,6 +284,7 @@ async createChat(_,{name,users},ctx,info){
       message = await ctx.db.mutation.createMessage({data},info);
       await ctx.db.mutation.updateChat({
         data:{
+          text:message.text,
           messages:{
             connect:{
               id:message.id
@@ -294,11 +294,51 @@ async createChat(_,{name,users},ctx,info){
         where:{
           id:chatId
         }
-      })
+      });
     }catch(err){
-      console.log(err)
+      
       throw new Error('Something went wrong. Try later');      
     }
     return message;
+  },
+  async deleteMessage(_,{id},ctx,info){
+    //1 check if the user  exist
+     if(!ctx.user || !ctx.user.userId){
+    throw new AuthenticationError('Unauthorized, You must be logged in to query this schema');
   }
+  //console.log(info)
+   // 2 check that the message have the same user id
+    let message;
+    try{
+      message = await ctx.db.query.message({
+        where:{
+          id
+        }
+      },`
+      {user{
+              id
+            }}
+      `)
+      
+    }catch(err){
+       throw new Error('Something went wrong. Try later'); 
+    } 
+    if(message.user.id !== ctx.user.userId){
+          throw new AuthenticationError('Unauthorized!');
+    }
+    try{
+      message = await ctx.db.mutation.updateMessage({
+        data:{
+          text:'DELETED',
+          state:'DELETED'
+        },
+        where:{
+          id
+        }
+      },info)
+    }catch(err){
+    }
+    return message
+  }
+
 };

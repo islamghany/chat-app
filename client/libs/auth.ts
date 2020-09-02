@@ -1,14 +1,16 @@
 import cookie from 'js-cookie';
 
 // set in cookie
-export const setCookie = (key, value) => {
+export const setCookie = (key:any, value:any,next) => {
    
         cookie.set(key, value);
+        next();
     
 };
 // remove from cookie
-export const removeCookie = key => {
+export const removeCookie = (key:any,next:any)=> {
         cookie.remove(key);
+        next();
     
 };
 // get from cookie such as stored token

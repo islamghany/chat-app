@@ -10,26 +10,29 @@ const Subscription = require("./resolvers/Subscription");
 const { Prisma ,forwardTo} = require("prisma-binding");
 const { importSchema } = require("graphql-import");
 const typeDefs = importSchema("./src/schema.graphql");
-const expressJwt = require("express-jwt");
+//const expressJwt = require("express-jwt");
+const {validateTokenAndSeeUser} = require('./helpers/auth');
+const db = require('./db');
 
 dotenv.config();
 
 const PORT = 4000;
-
+// start
 const app = express();
 const server = createServer(app);
 
-app.use(
-  expressJwt({
-    secret: process.env.JWT_SECRET,
-    algorithms: ["HS256"],
-    credentialsRequired: false
-  })
+app.use( async (req,res,next)=>{
+     const token = req.header('Authorization');
+     try {
+       const user = await validateTokenAndSeeUser(token,process.env.JWT_SECRET);
+       if(user){
+         req.user = user;
+       }
+     }catch(err){}
+      return next()
+}
 );
-const db = new Prisma({
-        typeDefs: "./src/generated/prisma.graphql",
-        endpoint: `${process.env.PRISMA_ENDPOINT}`,
-      });
+
 const apollo = new ApolloServer({
   resolvers: {
     Query,
@@ -42,10 +45,24 @@ const apollo = new ApolloServer({
     },
   },
   typeDefs,
-  context: ({ req ,connection}) => {
-      if (connection) {
+  subscriptions: {
+     onConnect:async (connectionParams, webSocket) => {
+      if (connectionParams.Authorization) {
+       const user = await validateTokenAndSeeUser(connectionParams.Authorization,process.env.JWT_SECRET);
+       if(user){
+         return {
+           user
+         }
+       }
+      }
+
+      throw new Error('Missing auth token!');
+    }
+  },
+  context: ({ req ,connection,payload }) => {
+      if (connection ){
       // check connection for metadata
-      return { ...connection.context , db};
+      return { user:connection.context , db};
     }
   	const user = req.user || null;
     return {

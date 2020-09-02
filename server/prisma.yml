@@ -1,5 +1,7 @@
-endpoint: ${env:PRISMA_ENDPOINT}
+#endpoint: ${env:PRISMA_ENDPOINT}
+endpoint: https://talklo-6f0fbee29f.herokuapp.com/talklo/prod
 datamodel: datamodel.prisma
+secret: ${env:PRISMA_SECRET}
 generate:  
   - generator: graphql-schema    
     output: ./src/generated/prisma.graphql

@@ -1,0 +1,345 @@
+@aux-color: #fff;
+@border-radius-base: 6px;
+@background-color: #f2f5ff;
+@base-color: #3f51b5;
+@text-color: #575757;
+.box-shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.css-mo9hcs-control:hover {
+  border-color: @base-color !important;
+}
+.css-10lvx9i-Input {
+  color: #333 !important;
+  &:hover {
+    border-color: @base-color !important;
+  }
+}
+
+.modal {
+  &__body {
+    max-height: 100vh !important;
+    overflow: inherit !important;
+  }
+}
+.drawer {
+  &__search {
+    padding: 20px;
+  }
+  &__users {
+    padding: 20px;
+  }
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e5e5ea;
+  }
+}
+.nav {
+  background-color: transparent !important;
+  padding: 10px 40px;
+  display: flex;
+  align-items: center;
+  height: 72px;
+  &__header {
+    color: @base-color;
+  }
+  &__button {
+    .box-shadow();
+    background: @aux-color;
+  }
+  &__options {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+  }
+  &__list {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    > :not(:last-child) {
+      margin-right: 15px;
+    }
+  }
+  &__user {
+    background: #fff;
+    border-radius: 6px;
+    display: flex;
+    overflow: hidden;
+    .box-shadow();
+    height: 42px;
+    &__char {
+      background: @base-color;
+      color: @aux-color;
+      font-size: 16px;
+      letter-spacing: 1px;
+      .center();
+      padding: 0 10px;
+    }
+    &__name {
+      font-weight: 400;
+      font-size: 16px;
+      letter-spacing: 0.3px;
+      .center();
+      padding: 0 10px;
+    }
+  }
+}
+
+.content {
+  background: @aux-color;
+  margin: 0 5px;
+  border-radius: 6px;
+  height: calc(100vh - 72px);
+  overflow: auto;
+
+  &__intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+}
+
+.sidebar {
+  background: @aux-color;
+  margin: 0 5px;
+  border-radius: 6px;
+  flex: 0 1 30% !important;
+  &__search {
+    padding: 20px;
+    input {
+      background: @background-color;
+    }
+  }
+  &__divider {
+    background: @base-color;
+    padding: 5px 20px;
+    color: @aux-color;
+  }
+  &__users {
+    padding: 20px 0;
+    height: calc(100vh - 155px);
+    overflow-y: auto;
+  }
+}
+
+.chat {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+
+  &__avatar {
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    color: @text-color;
+    background: @background-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__button {
+    background: transparent !important;
+    &:hover {
+      background: @background-color !important;
+    }
+
+    &.rs-btn-active {
+      background: @background-color !important;
+    }
+  }
+  &__item {
+    height: 72px;
+    display: flex;
+    align-items: center;
+  }
+  &__img {
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+  }
+  &__info {
+    padding-right: 14px;
+    display: flex;
+    flex-basis: auto;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    min-width: 0;
+    &__des {
+      text-align: left;
+      font-weight: 300;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      span {
+        display: inline-block;
+        position: relative;
+        flex-grow: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+    &__title {
+      display: flex;
+      align-items: center;
+      display: flex;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+    &__name {
+      text-align: left;
+      font-weight: 500;
+      font-size: 17px;
+      display: flex;
+      flex-grow: 1;
+      overflow: hidden;
+      span {
+        display: inline-block;
+        position: relative;
+        flex-grow: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  &__loading {
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+  &__body {
+    flex: 1;
+    position: relative;
+    &__container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      position: absolute;
+      top: 0;
+      transition: background 0.3s ease-out 0.1s;
+      width: 100%;
+      left: 0;
+      padding-bottom: 1rem;
+    }
+  }
+  &__sender {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+  }
+  &__input {
+    flex: 1;
+  }
+  &__form {
+    flex-basis: 1;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.message {
+  margin-bottom: 10px;
+  min-width: 10px;
+  &__avatar {
+    color: @text-color;
+    background: @background-color;
+  }
+  .__deleted {
+    .message__container {
+      max-width: 90%;
+      padding: 5px;
+      border-radius: 10px;
+      background: #030305;
+      color: #fff;
+    }
+  }
+  &__sender {
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20px;
+    align-items: center;
+    &:hover {
+      .message__menu {
+        display: block !important;
+      }
+    }
+    .message__container {
+      max-width: 90%;
+      padding: 10px 10px 0;
+      border-radius: 10px;
+      background: @base-color;
+      color: #fff;
+    }
+    .message__tail {
+      color: @background-color;
+    }
+    .message__menu {
+      margin-right: 12px;
+      display: none;
+      .rs-btn-default {
+        background: transparent !important;
+      }
+    }
+  }
+  &__reciever {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 10px;
+    .message__container {
+      max-width: 90%;
+      padding: 10px 10px 0;
+      border-radius: 10px;
+      background: @base-color;
+      color: #fff;
+      background: @background-color;
+      color: @text-color;
+      &.bordred {
+        border-radius: 10px 10px 10px 0;
+      }
+    }
+    &__img {
+      width: 50px;
+      text-align: center;
+      align-self: flex-end;
+    }
+  }
+  &__text {
+    line-height: 1.4;
+    font-size: 16px;
+    display: block;
+  }
+  &__tail {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 5px 0;
+    color: #a5a5a5;
+    .time {
+      margin-right: 10px;
+    }
+  }
+}

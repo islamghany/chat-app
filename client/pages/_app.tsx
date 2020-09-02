@@ -4,17 +4,28 @@ import {ApolloProvider} from '@apollo/client';
 import '../style/index.less'
 import User from '../components/User' ;
 import CheckAuth from '../components/CheckAuth';
-function App({ Component, pageProps,apollo}) {
-  return <ApolloProvider client={apollo}>
-  <User>
-  {(data)=>{
- return <CheckAuth data={data}>
-     <Component {...pageProps} />
- </CheckAuth>
- }
-     }
-  </User>
-  </ApolloProvider>
+import '../components/chat/style.less'
+
+function App({ Component, pageProps,apollo}:any) {
+ return <ApolloProvider client={apollo}>
+    <User>
+    {(data:any)=>{
+        return <Component {...pageProps} data={data}/>
+      }
+    }
+    </User>
+</ApolloProvider>
+ 
 }
 
+// <User>
+// <CheckAuth data={data}>
+
+//  {(data:any)=>{
+//  	}
+//      }
+ //</CheckAuth>
+
+//   </User>
+ //return
 export default withApollo(App)

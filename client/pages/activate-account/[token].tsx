@@ -8,7 +8,7 @@ import {  Message, Divider } from "rsuite";
 import WrapperCenter from '../../components/WrapperCenter'
 import Link from "next/link";
 import { useRouter } from 'next/router'
-
+import Head from '../../components/Head'
 const ACTIVATE_EMAIL = gql`
   query activateAccount($token: String!) {
     activateAccount(token: $token) {
@@ -44,6 +44,7 @@ const Accivate=  () => {
   const { token } = router.query
   return (
     <WrapperCenter>
+        <Head title="Talklo | Activate Account" description="Talklo is a lightwight chat app, easy to send and recieve message with friends" />
       <div className="form__container">
         <h5>Accivate Account</h5>
         <Divider />

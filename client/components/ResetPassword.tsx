@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { checkErrors } from "../libs/checkErrors";
 import TextInput from "./form/TextInput";
+import Head from './Head'
 
 const RESET_PASSWORD = gql`
   mutation resetPassword($newPassword: String!, $resetPasswordLink: String!) {
@@ -108,6 +109,7 @@ const ResetPassword = () => {
   const { token } = router.query;
   return (
     <WrapperCenter>
+    <Head title="Talklo | Reset Password" description="Talklo is a lightwight chat app, easy to send and recieve message with friends" />
       <div className="form__container">
         <h5>Reset Password</h5>
         <Divider />

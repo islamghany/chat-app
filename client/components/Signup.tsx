@@ -8,7 +8,7 @@ import { checkErrors } from "../libs/checkErrors";
 import Loading from "../components/loading";
 import { useMutation, gql } from "@apollo/client";
 import ErrorMessage from "./ErrorMessgae";
-
+import Head from './Head'
 type Values = {
   email: string;
   username: string;
@@ -114,7 +114,7 @@ const SignupForm = () => {
           size="lg"
           type="submit"
         >
-          Login
+          Signup
         </Button>
       </form>
       <Divider />
@@ -130,9 +130,10 @@ const SignupForm = () => {
 const Signup = () => {
   return (
     <WrapperCenter>
+          <Head title="Talklo | Signup" description="Talklo is a lightwight chat app, easy to send and recieve message with friends" />
       <div className="wrapper__info">
-        <h1 className="heading">Title</h1>
-        <h4>Title connect you to your friend</h4>
+        <h1 className="heading">Talklo</h1>
+        <h4>Talklo connect you to your friend</h4>
       </div>
       <div className="form__container">
         <SignupForm />

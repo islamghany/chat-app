@@ -7,6 +7,7 @@ import { checkErrors } from "../libs/checkErrors";
 import Loading from "../components/loading";
 import { useMutation, gql } from "@apollo/client";
 import ErrorMessage from "./ErrorMessgae";
+import Head from './Head'
 type Values = {
   email: string;
 };
@@ -61,13 +62,14 @@ const ForgetPasswordForm = () => {
 const ForgetPassword = () => {
   return (
     <WrapperCenter>
+        <Head title="Talklo | Forget Password" description="Talklo is a lightwight chat app, easy to send and recieve message with friends" />
       <div className="form__container">
         <h5>Forget Password</h5>
         <Divider />
         <ForgetPasswordForm />
         <div className="form__end">
           <span>Have an account?</span>
-          <Link href="/signup">
+          <Link href="/login">
             <a className="rs-btn rs-btn-link">Login</a>
           </Link>
         </div>
