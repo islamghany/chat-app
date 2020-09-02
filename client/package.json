@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.1.4",
+    "@types/react-select": "^3.0.19",
     "@zeit/next-less": "^1.0.1",
     "dayjs": "^1.8.34",
     "graphql": "^15.3.0",
