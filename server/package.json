@@ -17,8 +17,8 @@
     "express-jwt": "^6.0.0",
     "graphql-import": "^1.0.2",
     "jsonwebtoken": "^8.5.1",
+    "nodemon": "^2.0.4",
     "prisma-binding": "^2.3.16",
-    "validator": "^13.1.1",
-    "nodemon": "1.18.4",
+    "validator": "^13.1.1"
   }
 }
