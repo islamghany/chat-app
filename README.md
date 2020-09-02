@@ -8,7 +8,7 @@ real-time chat app with graphql
 
 # features
 <ul>
- <li>high authentication</li>
+ <li>high authentication with email verification</li>
  <li>real-time adding and deleting messages and create group</li>
 </ul>
 <div style="display:flex;justify-content:center;">
