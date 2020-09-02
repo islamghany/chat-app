@@ -11,7 +11,7 @@ import { getCookie } from "./auth";
 import { setContext } from "@apollo/client/link/context";
 import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
-
+import {endpoint,subEndpoint,prodSubEndpoint,prodEndpoint} from '../config'
 interface ChatInfo {
   name: string;
   id: string;
@@ -32,8 +32,9 @@ export const keyword = makeVar<string>('');
 export const isDrawerOpen = makeVar<boolean>(false);
 export const isModalOpen = makeVar<boolean>(false);
 export const searchKeyword = makeVar<string>('');
+
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000/graphql",
+  uri:process.env.NODE_ENV === 'production' ? prodEndpoint :endpoint,
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -50,7 +51,7 @@ const authLink = setContext((_, { headers }) => {
 let link = authLink.concat(httpLink);
 if(process.browser){
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:4000/graphql`,
+  uri: process.env.NODE_ENV === 'production' ? prodSubEndpoint : subEndpoint,
   options: {
     reconnect: true,
     connectionParams: {

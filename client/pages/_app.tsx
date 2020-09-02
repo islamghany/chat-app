@@ -8,12 +8,14 @@ import '../components/chat/style.less'
 
 function App({ Component, pageProps,apollo}:any) {
  return <ApolloProvider client={apollo}>
+ <div className="app-wrapper">
     <User>
     {(data:any)=>{
         return <Component {...pageProps} data={data}/>
       }
     }
     </User>
+ </div>
 </ApolloProvider>
  
 }
