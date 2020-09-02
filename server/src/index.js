@@ -34,6 +34,7 @@ app.use( async (req,res,next)=>{
 );
 
 const apollo = new ApolloServer({
+
   resolvers: {
     Query,
     Subscription,
@@ -73,6 +74,8 @@ const apollo = new ApolloServer({
     };
   
   },
+  introspection: true,
+  playground: true,
 });
 
 apollo.applyMiddleware({ app,cors: { origin: process.env.CLIENT_URL, credentials: true }});
