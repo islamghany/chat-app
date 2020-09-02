@@ -17,7 +17,7 @@ const ACTIVATE_EMAIL = gql`
   }
 `;
 
-const ActivateEmail = ({ token }) => {
+const ActivateEmail = ({ token }:any) => {
   const { data, error, loading } = useQuery(ACTIVATE_EMAIL, {
     variables: { token },
   });

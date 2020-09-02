@@ -55,8 +55,9 @@ const LoginForm = () => {
   });
   //console.log(removeCookie(`${process.env.APP_SECRET}`));
   const { register, handleSubmit, errors } = useForm<Values>();
-  const onSubmit: SubmitHandler<Values> = (data:Values) =>
+  const onSubmit: SubmitHandler<Values> = (data:Values) =>{
     login({ variables: { ...data } });
+  }
 
   return (
     <div className="form__container">
@@ -109,7 +110,7 @@ const LoginForm = () => {
     </div>
   );
 };
-const Login = ({ data }) => {
+const Login = ({ data }:any) => {
   return (
     <WrapperCenter>
       <Head title="Talklo | login" description="Talklo is a lightwight chat app, easy to send and recieve message with friends" />

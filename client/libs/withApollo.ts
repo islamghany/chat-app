@@ -63,7 +63,7 @@ const wsLink = new WebSocketLink({
   link = split(
       // split based on operation type
       ({ query }) => {
-        const { kind, operation } = getMainDefinition(query);
+        const { kind, operation }:any = getMainDefinition(query);
         return kind === "OperationDefinition" && operation === "subscription";
       },
       wsLink,
@@ -73,7 +73,7 @@ const wsLink = new WebSocketLink({
 }
 
 
-export const client:ApolloClient<NormalizedCacheObject | null> = new ApolloClient({
+export const client = new ApolloClient({
   ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     link,
     cache: new InMemoryCache({

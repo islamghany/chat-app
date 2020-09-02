@@ -29,14 +29,14 @@ const getMessageDate = (date: string) => {
     .split(/[\s:]+/);
   return x[0] + ":" + x[1] + " " + x[3];
 };
-const getDate = (d: string | null) => {
+const getDate = (d: string) => {
   if (new Date().toLocaleDateString() === new Date(d).toLocaleDateString())
     return "today";
   else if ((new Date().getTime() - new Date(d).getTime()) * 1000 * 3600 < 48)
     return "yesterday";
   return new Date(d).toDateString();
 };
-const compareDates = (x: string | null, y: string) => {
+const compareDates = (x: string , y: string) => {
   return new Date(x).toLocaleDateString() !== new Date(y).toLocaleDateString();
 };
 
@@ -141,6 +141,14 @@ interface Props {
   diff?: boolean;
   deleteMessage?: any;
 }
+
+interface MessageProps {
+  id: string;
+  userId: string;
+  messages: Message[];
+  subscribeToMore: any;
+  fetchMore: any;
+}
 let userId = "10";
 
 const RenderMessage = ({ message, userId, diff, deleteMessage }: Props) => {
@@ -231,12 +239,12 @@ const Messages = ({
   messages,
   fetchMore,
   subscribeToMore,
-}: ChatInfo) => {
+}: MessageProps) => {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const [deleteMessage] = useMutation(DELETE_MESSAGE, {
     ignoreResults: true,
   });
-  let lastDate: string | null = null;
+  let lastDate: string ='';
   let LID: string | null = null;
   const [lastFetchDataLength, setLastFetchDataLength] = useState(0);
   const [lastHeight, setLastHeight] = useState(0);
@@ -257,7 +265,7 @@ const Messages = ({
           id,
           skip: messages.length,
         },
-        updateQuery: (prev, { fetchMoreResult }) => {
+        updateQuery: (prev:any, { fetchMoreResult }:any) => {
           isSkiping = "SAME";
           if (!fetchMoreResult) return prev;
           return Object.assign({}, prev, {
@@ -328,7 +336,7 @@ const Messages = ({
     </div>
   );
 };
-const RenderChatMessages = ({ id, userId }: ChatInfo) => {
+const RenderChatMessages = ({ id, userId }: any) => {
   const { data, loading, error, fetchMore, subscribeToMore } = useQuery(
     GET_CHAT_MESSAGES,
     {
@@ -377,7 +385,7 @@ const RenderChatMessages = ({ id, userId }: ChatInfo) => {
   }
   return null;
 };
-const RenderChatHeader = ({ id, name }: ChatInfo) => {
+const RenderChatHeader = ({ id, name }: any) => {
   return (
     <div>
       <div className="chat__item">
@@ -403,10 +411,10 @@ const RenderChatHeader = ({ id, name }: ChatInfo) => {
   );
 };
 
-const ChatSender = ({ userId, id, username }: ChatInfo) => {
+const ChatSender = ({ userId, id, username }: any) => {
   const senderRef = useRef<HTMLInputElement | null>(null);
   const [createMessage, { data }] = useMutation(CREATE_MESSAGE);
-  const onSubmit = (e: Event) => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
 
     if (senderRef?.current?.value.trim().length) {
@@ -469,7 +477,7 @@ const ChatSender = ({ userId, id, username }: ChatInfo) => {
   );
 };
 
-const Chat = ({ id, userId, name, username }: ChatInfo) => {
+const Chat = ({ id, userId, name, username }: any) => {
   const { data, loading, error } = useQuery(GET_CHAT_MESSAGE_COUNT, {
     variables: { id },
   });

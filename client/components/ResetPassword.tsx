@@ -36,7 +36,7 @@ type Values = {
   confirmPassword: string;
 };
 
-const ResetPasswordForm = ({ token }) => {
+const ResetPasswordForm = ({ token }:any) => {
   const {
     data: queryData,
     error: queryError,
