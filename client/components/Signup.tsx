@@ -37,9 +37,9 @@ const CREATE_USER = gql`
 const SignupForm = () => {
   const [createUser, { data, error, loading }] = useMutation(CREATE_USER);
   const { register, handleSubmit, errors, watch } = useForm<Values>();
-  const onSubmit: SubmitHandler<Values> = (data) => {
-    delete data.confirmPassword;
-    createUser({ variables: { ...data } });
+  const onSubmit: SubmitHandler<Values> = ({email,username,password,confirmPassword,name}) => {
+
+    createUser({ variables: { email,name,username,password } });
   };
   const cp = watch("password");
 
