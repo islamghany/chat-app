@@ -138,7 +138,7 @@ const CreateChatForm = ({ close }: any) => {
         : []
     );
   };
-  const handleSubmit = (e: Event) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     if (!members || !members.length) {
       setMembersError(true);
